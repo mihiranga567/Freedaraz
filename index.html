@@ -1,60 +1,64 @@
 <!DOCTYPE html>
 <html lang="si">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Welcome Daraz Store</title>
   <style>
     body {
       margin: 0;
       padding: 0;
-      background: linear-gradient(to bottom, #fff8f0, #ffd9ec);
       font-family: sans-serif;
       overflow-x: hidden;
+      background-image: url('https://i.pinimg.com/originals/f2/aa/16/f2aa16e3d8236dfac6a107fa89bbcc18.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
     }
+
     .welcome {
       text-align: center;
       padding-top: 100px;
       font-size: 36px;
       animation: fadeIn 3s;
+      color: white;
+      text-shadow: 1px 1px 5px black;
     }
+
     .gift {
       font-size: 50px;
       animation: fall 5s infinite;
       display: inline-block;
       margin: 0 10px;
     }
+
     @keyframes fall {
       0% { transform: translateY(-100px); opacity: 0; }
       100% { transform: translateY(600px); opacity: 1; }
     }
-    #wheel-container {
-      position: relative;
-      width: 300px;
-      height: 300px;
-      margin: 50px auto;
-    }
+
     #pointer {
       width: 0;
       height: 0;
       border-left: 20px solid transparent;
       border-right: 20px solid transparent;
       border-bottom: 30px solid red;
-      position: absolute;
-      top: -30px;
-      left: calc(50% - 20px);
-      z-index: 10;
+      margin: 20px auto;
     }
+
     #wheel {
-      width: 100%;
-      height: 100%;
+      margin: 20px auto;
+      width: 300px;
+      height: 300px;
       border-radius: 50%;
       border: 10px solid #f88;
       position: relative;
       overflow: hidden;
       transform: rotate(0deg);
       transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
+      background: white;
     }
+
     .segment {
       width: 50%;
       height: 50%;
@@ -68,6 +72,7 @@
       font-size: 16px;
       font-weight: bold;
     }
+
     .spin-btn {
       display: block;
       margin: 30px auto;
@@ -82,6 +87,7 @@
   </style>
 </head>
 <body>
+
   <div class="welcome">🛍️ Welcome Daraz 🛍️</div>
   <div style="text-align:center;">
     <span class="gift">🛍️</span>
@@ -90,57 +96,59 @@
     <span class="gift">👜</span>
   </div>
 
-  <div id="wheel-container">
-    <div id="pointer"></div>
-    <div id="wheel">
-      <div class="segment" style="transform: rotate(0deg); background: #ff9999;">Try</div>
-      <div class="segment" style="transform: rotate(72deg); background: #ffcc99;">Rs.2000</div>
-      <div class="segment" style="transform: rotate(144deg); background: #ffff99;">Try</div>
-      <div class="segment" style="transform: rotate(216deg); background: #ccff99;">Rs.500</div>
-      <div class="segment" style="transform: rotate(288deg); background: #99ffcc;">Rs.1000</div>
-    </div>
+  <div id="pointer"></div>
+
+  <div id="wheel">
+    <div class="segment" style="transform: rotate(0deg); background: #ff9999;">Try</div>
+    <div class="segment" style="transform: rotate(72deg); background: #ffcc99;">Rs.2000</div>
+    <div class="segment" style="transform: rotate(144deg); background: #ffff99;">Try</div>
+    <div class="segment" style="transform: rotate(216deg); background: #ccff99;">Rs.500</div>
+    <div class="segment" style="transform: rotate(288deg); background: #99ffcc;">Rs.1000</div>
   </div>
 
   <button class="spin-btn" onclick="spin()">SPIN</button>
 
-  <!-- Sounds -->
-  <audio id="click-sound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_2abbe8fc3b.mp3?filename=button-124476.mp3"></audio>
-  <audio id="spin-sound" src="https://cdn.pixabay.com/download/audio/2021/08/09/audio_d6a2f9a707.mp3?filename=spin-wheel-2-110244.mp3"></audio>
-  <audio id="win-sound" src="https://cdn.pixabay.com/download/audio/2022/02/23/audio_1e1f66bce2.mp3?filename=win-144232.mp3"></audio>
+  <!-- 🔊 Sounds -->
+  <audio id="start-sound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
+  <audio id="spinning-sound" src="https://www.soundjay.com/misc/sounds/clock-ticking-1.mp3" loop></audio>
+  <audio id="stop-sound" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
 
   <script>
     let spins = 0;
-    const wheel = document.getElementById('wheel');
-    const clickSound = document.getElementById('click-sound');
-    const spinSound = document.getElementById('spin-sound');
-    const winSound = document.getElementById('win-sound');
+    let wheel = document.getElementById('wheel');
+
+    const startSound = document.getElementById("start-sound");
+    const spinSound = document.getElementById("spinning-sound");
+    const stopSound = document.getElementById("stop-sound");
 
     function spin() {
       spins++;
-      clickSound.play(); // play click
-      spinSound.play(); // play spin sound
-
       let deg;
+
+      // Start sound
+      startSound.play();
+      spinSound.play();
+
       if (spins === 1) {
-        deg = 720 + 36; // Try
+        deg = 720 + 36;
+        wheel.style.transform = `rotate(${deg}deg)`;
+
+        setTimeout(() => {
+          spinSound.pause();
+          stopSound.play();
+          alert("🎁 TRY AGAIN! 🎁");
+        }, 4200);
       } else {
-        deg = 1440 + 288; // Rs.1000
+        deg = 1440 + 288;
+        wheel.style.transform = `rotate(${deg}deg)`;
+
+        setTimeout(() => {
+          spinSound.pause();
+          stopSound.play();
+          alert("🎉 සියලුම දේ Rs.1000🎉");
+          window.location.href = "products.html";
+        }, 4500);
       }
-
-      wheel.style.transform = `rotate(${deg}deg)`;
-
-      setTimeout(() => {
-        spinSound.pause(); // stop spin sound
-        spinSound.currentTime = 0;
-        winSound.play(); // play winning sound
-
-        if (spins === 1) {
-          alert('TRY AGAIN! 🎁');
-        } else {
-          alert('🎉 ඔබ Rs.1000ක් දිනාගෙන ඇත! 🎉');
-          window.location.href = 'products.html';
-        }
-      }, 4500);
     }
   </script>
 </body>
