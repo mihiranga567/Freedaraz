@@ -21,20 +21,57 @@
     .gift {
       font-size: 50px;
       animation: fall 5s infinite;
-      display: block;
+      display: inline-block;
+      margin: 0 10px;
     }
     @keyframes fall {
       0% { transform: translateY(-100px); opacity: 0; }
       100% { transform: translateY(600px); opacity: 1; }
     }
-    #wheel {
+
+    /* Wheel container and pointer */
+    #wheel-container {
+      position: relative;
+      width: 300px;
       margin: 50px auto;
-      border: 10px solid #f88;
+    }
+    #wheel {
       width: 300px;
       height: 300px;
       border-radius: 50%;
+      border: 10px solid #f88;
       position: relative;
+      overflow: hidden;
+      transform: rotate(0deg);
+      transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
     }
+    .segment {
+      width: 50%;
+      height: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform-origin: 0% 0%;
+      background: lightcoral;
+      color: white;
+      text-align: right;
+      padding: 10px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    #pointer {
+      width: 0;
+      height: 0;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-bottom: 30px solid red;
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+
     .spin-btn {
       display: block;
       margin: 30px auto;
@@ -44,28 +81,54 @@
       color: white;
       border: none;
       border-radius: 10px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <div class="welcome">🛍️Welcome Daraz🛍️</div>
+  <div class="welcome">🛍️ Welcome Daraz 🛍️</div>
+
   <div style="text-align:center;">
     <span class="gift">🛍️</span>
     <span class="gift">🎁</span>
     <span class="gift">🛒</span>
     <span class="gift">👜</span>
   </div>
-  <div id="wheel">SPIN WHEEL</div>
+
+  <div id="wheel-container">
+    <div id="pointer"></div>
+
+    <div id="wheel">
+      <div class="segment" style="transform: rotate(0deg); background: #ff9999;">Try</div>
+      <div class="segment" style="transform: rotate(72deg); background: #ffcc99;">Rs.2000</div>
+      <div class="segment" style="transform: rotate(144deg); background: #ffff99;">Try</div>
+      <div class="segment" style="transform: rotate(216deg); background: #ccff99;">Rs.500</div>
+      <div class="segment" style="transform: rotate(288deg); background: #99ffcc;">Rs.1000</div>
+    </div>
+  </div>
+
   <button class="spin-btn" onclick="spin()">SPIN</button>
+
   <script>
     let spins = 0;
+    let wheel = document.getElementById('wheel');
+
     function spin() {
       spins++;
-      if(spins == 1){
-        alert('TRY AGAIN! 🎁');
+      let deg;
+      if (spins === 1) {
+        deg = 720 + 36; // First spin lands between Try and Rs.2000
+        wheel.style.transform = `rotate(${deg}deg)`;
+        setTimeout(() => {
+          alert("TRY AGAIN! 🎁");
+        }, 4000);
       } else {
-        alert('🎉Rs.1000 WIN!🎉');
-        window.location.href = 'products.html';
+        deg = 1440 + 295; // Second spin lands on Rs.1000
+        wheel.style.transform = `rotate(${deg}deg)`;
+        setTimeout(() => {
+          alert("🎉 ඔබ Rs.1000ක් දිනාගෙන ඇත! 🎉");
+          window.location.href = "products.html";
+        }, 4500);
       }
     }
   </script>
