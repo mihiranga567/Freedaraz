@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome Daraz Store</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #fff8f0, #ffd9ec);
+      font-family: sans-serif;
+      overflow-x: hidden;
+    }
+    .welcome {
+      text-align: center;
+      padding-top: 100px;
+      font-size: 36px;
+      animation: fadeIn 3s;
+    }
+    .gift {
+      font-size: 50px;
+      animation: fall 5s infinite;
+      display: block;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-100px); opacity: 0; }
+      100% { transform: translateY(600px); opacity: 1; }
+    }
+    #wheel {
+      margin: 50px auto;
+      border: 10px solid #f88;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      position: relative;
+    }
+    .spin-btn {
+      display: block;
+      margin: 30px auto;
+      font-size: 20px;
+      padding: 10px 30px;
+      background: orange;
+      color: white;
+      border: none;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="welcome">🎁 Welcome Daraz Store 🎁</div>
+  <div style="text-align:center;">
+    <span class="gift">🎁</span>
+    <span class="gift">🎁</span>
+  </div>
+  <div id="wheel">🛍️ SPIN WHEEL</div>
+  <button class="spin-btn" onclick="spin()">SPIN</button>
+  <script>
+    let spins = 0;
+    function spin() {
+      spins++;
+      if(spins == 1){
+        alert('TRY AGAIN! 🎁');
+      } else {
+        alert('🎉 Rs.1000 WON! 🎉');
+        window.location.href = 'products.html';
+      }
+    }
+  </script>
+</body>
+</html>
