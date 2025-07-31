@@ -73,7 +73,6 @@
       font-weight: bold;
       text-shadow: 2px 2px 4px black;
       -webkit-text-stroke: 1px black;
-      text-stroke: 1px black;
     }
 
     .spin-btn {
@@ -88,42 +87,48 @@
       cursor: pointer;
     }
 
-    /* WhatsApp Share Popup */
+    /* Popup styles */
     #share-popup {
       display: none;
       position: fixed;
-      top: 20%;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #fff;
-      border: 2px solid #f88;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0,0,0,0.7);
+      z-index: 999;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .popup-box {
+      background: white;
       padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.3);
-      z-index: 999;
       text-align: center;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 10px black;
     }
 
-    #share-popup p {
-      font-size: 18px;
-      font-weight: bold;
+    .popup-box p {
+      font-size: 16px;
+      margin-bottom: 20px;
     }
 
-    #share-popup button {
+    .popup-box button {
       margin: 10px;
       padding: 10px 20px;
       border: none;
       border-radius: 5px;
-      color: white;
+      font-size: 16px;
       cursor: pointer;
     }
 
-    #share-popup button:first-child {
-      background: green;
+    .send-btn {
+      background: #25D366;
+      color: white;
     }
 
-    #share-popup button:last-child {
-      background: gray;
+    .later-btn {
+      background: #ccc;
     }
   </style>
 </head>
@@ -149,15 +154,16 @@
 
   <button class="spin-btn" onclick="spin()">SPIN</button>
 
-  <!-- WhatsApp Share Popup -->
+  <!-- Popup -->
   <div id="share-popup">
-    <p>🎉 Whatsapp හරහා ඔබේ මිතුරන්ට කියන්න! 🎉</p>
-    <p>තවත් වාසි දිනාගන්න කියලා යවන්න!</p>
-    <button onclick="sendWhatsApp()">යවන්න</button>
-    <button onclick="closePopup()">පසුව</button>
+    <div class="popup-box">
+      <p>Whatsapp හරහා ඔබේ මිතුරන් හට යවා තවත් වාසි රැසක් දිනා ගන්න!</p>
+      <button class="send-btn" onclick="sendWhatsApp()">යවන්න</button>
+      <button class="later-btn" onclick="goToProducts()">පසුව</button>
+    </div>
   </div>
 
-  <!-- 🔊 Sounds -->
+  <!-- Sounds -->
   <audio id="start-sound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
   <audio id="spinning-sound" src="https://www.soundjay.com/misc/sounds/clock-ticking-1.mp3" loop></audio>
   <audio id="stop-sound" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
@@ -165,7 +171,6 @@
   <script>
     let spins = 0;
     let wheel = document.getElementById('wheel');
-
     const startSound = document.getElementById("start-sound");
     const spinSound = document.getElementById("spinning-sound");
     const stopSound = document.getElementById("stop-sound");
@@ -174,12 +179,11 @@
       spins++;
       let deg;
 
-      // Start sound
       startSound.play();
       spinSound.play();
 
       if (spins === 1) {
-        deg = 720 + 36;
+        deg = 720 + 216;
         wheel.style.transform = `rotate(${deg}deg)`;
 
         setTimeout(() => {
@@ -194,26 +198,27 @@
         setTimeout(() => {
           spinSound.pause();
           stopSound.play();
-          alert("🎉 සියලුම දේ Rs.1000🎉");
           showPopup();
         }, 4500);
       }
     }
 
     function showPopup() {
-      document.getElementById("share-popup").style.display = "block";
-    }
-
-    function closePopup() {
-      document.getElementById("share-popup").style.display = "none";
+      document.getElementById("share-popup").style.display = "flex";
     }
 
     function sendWhatsApp() {
       const text = encodeURIComponent("Daraz වෙතින් දිනුම් ඇදීම! ඔබත් අදම බාන්ඩ මිලදී ගන්න, නොහිතන මුදලකට 🎁\n\nhttps://mihiranga567.github.io/Freedaraz/");
       const link = `https://wa.me/?text=${text}`;
       window.open(link, '_blank');
-      closePopup();
+      goToProducts();
+    }
+
+    function goToProducts() {
+      document.getElementById("share-popup").style.display = "none";
+      window.location.href = "products.html";
     }
   </script>
+
 </body>
 </html>
