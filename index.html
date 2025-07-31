@@ -59,21 +59,21 @@
       background: white;
     }
 
- .segment {
-  width: 50%;
-  height: 50%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform-origin: 0% 0%;
-  color: white;
-  text-align: right;
-  padding: 10px;
-  font-size: 22px;             /* අකුරු ලොකු කිරීම */
-  font-weight: bold;
-  text-shadow: 2px 2px 4px black;  /* කලු shadow */
-  -webkit-text-stroke: 1px black;  /* Chrome/Safari සඳහා outline */
-  text-stroke: 1px black;           /* Firefox සඳහා (experimental) */
+    .segment {
+      width: 50%;
+      height: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform-origin: 0% 0%;
+      color: white;
+      text-align: right;
+      padding: 10px;
+      font-size: 22px;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px black;
+      -webkit-text-stroke: 1px black;
+      text-stroke: 1px black;
     }
 
     .spin-btn {
@@ -86,6 +86,44 @@
       border: none;
       border-radius: 10px;
       cursor: pointer;
+    }
+
+    /* WhatsApp Share Popup */
+    #share-popup {
+      display: none;
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fff;
+      border: 2px solid #f88;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      z-index: 999;
+      text-align: center;
+    }
+
+    #share-popup p {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    #share-popup button {
+      margin: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+    }
+
+    #share-popup button:first-child {
+      background: green;
+    }
+
+    #share-popup button:last-child {
+      background: gray;
     }
   </style>
 </head>
@@ -110,6 +148,14 @@
   </div>
 
   <button class="spin-btn" onclick="spin()">SPIN</button>
+
+  <!-- WhatsApp Share Popup -->
+  <div id="share-popup">
+    <p>🎉 Whatsapp හරහා ඔබේ මිතුරන්ට කියන්න! 🎉</p>
+    <p>තවත් වාසි දිනාගන්න කියලා යවන්න!</p>
+    <button onclick="sendWhatsApp()">යවන්න</button>
+    <button onclick="closePopup()">පසුව</button>
+  </div>
 
   <!-- 🔊 Sounds -->
   <audio id="start-sound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
@@ -149,9 +195,27 @@
           spinSound.pause();
           stopSound.play();
           alert("🎉 සියලුම දේ Rs.1000🎉");
-          window.location.href = "products.html";
+          showPopup();
+          setTimeout(() => {
+            window.location.href = "products.html";
+          }, 6000);
         }, 4500);
       }
+    }
+
+    function showPopup() {
+      document.getElementById("share-popup").style.display = "block";
+    }
+
+    function closePopup() {
+      document.getElementById("share-popup").style.display = "none";
+    }
+
+    function sendWhatsApp() {
+      const text = encodeURIComponent("Daraz වෙතින් දිනුම් ඇදීම! ඔබත් අදම බාන්ඩ මිලදී ගන්න, නොහිතන මුදලකට 🎁\n\nhttps://mihiranga567.github.io/Freedaraz/");
+      const link = `https://wa.me/?text=${text}`;
+      window.open(link, '_blank');
+      closePopup();
     }
   </script>
 </body>
