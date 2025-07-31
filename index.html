@@ -28,16 +28,26 @@
       0% { transform: translateY(-100px); opacity: 0; }
       100% { transform: translateY(600px); opacity: 1; }
     }
-
-    /* Wheel container and pointer */
     #wheel-container {
       position: relative;
       width: 300px;
+      height: 300px;
       margin: 50px auto;
     }
+    #pointer {
+      width: 0;
+      height: 0;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-bottom: 30px solid red;
+      position: absolute;
+      top: -30px;
+      left: calc(50% - 20px);
+      z-index: 10;
+    }
     #wheel {
-      width: 300px;
-      height: 300px;
+      width: 100%;
+      height: 100%;
       border-radius: 50%;
       border: 10px solid #f88;
       position: relative;
@@ -52,26 +62,12 @@
       top: 50%;
       left: 50%;
       transform-origin: 0% 0%;
-      background: lightcoral;
       color: white;
       text-align: right;
       padding: 10px;
       font-size: 16px;
       font-weight: bold;
     }
-    #pointer {
-      width: 0;
-      height: 0;
-      border-left: 20px solid transparent;
-      border-right: 20px solid transparent;
-      border-bottom: 30px solid red;
-      position: absolute;
-      top: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-    }
-
     .spin-btn {
       display: block;
       margin: 30px auto;
@@ -87,7 +83,6 @@
 </head>
 <body>
   <div class="welcome">🛍️ Welcome Daraz 🛍️</div>
-
   <div style="text-align:center;">
     <span class="gift">🛍️</span>
     <span class="gift">🎁</span>
@@ -97,7 +92,6 @@
 
   <div id="wheel-container">
     <div id="pointer"></div>
-
     <div id="wheel">
       <div class="segment" style="transform: rotate(0deg); background: #ff9999;">Try</div>
       <div class="segment" style="transform: rotate(72deg); background: #ffcc99;">Rs.2000</div>
@@ -109,27 +103,44 @@
 
   <button class="spin-btn" onclick="spin()">SPIN</button>
 
+  <!-- Sounds -->
+  <audio id="click-sound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_2abbe8fc3b.mp3?filename=button-124476.mp3"></audio>
+  <audio id="spin-sound" src="https://cdn.pixabay.com/download/audio/2021/08/09/audio_d6a2f9a707.mp3?filename=spin-wheel-2-110244.mp3"></audio>
+  <audio id="win-sound" src="https://cdn.pixabay.com/download/audio/2022/02/23/audio_1e1f66bce2.mp3?filename=win-144232.mp3"></audio>
+
   <script>
     let spins = 0;
-    let wheel = document.getElementById('wheel');
+    const wheel = document.getElementById('wheel');
+    const clickSound = document.getElementById('click-sound');
+    const spinSound = document.getElementById('spin-sound');
+    const winSound = document.getElementById('win-sound');
 
     function spin() {
       spins++;
+      clickSound.play(); // play click
+      spinSound.play(); // play spin sound
+
       let deg;
       if (spins === 1) {
-        deg = 720 + 36; // First spin lands between Try and Rs.2000
-        wheel.style.transform = `rotate(${deg}deg)`;
-        setTimeout(() => {
-          alert("TRY AGAIN! 🎁");
-        }, 4000);
+        deg = 720 + 36; // Try
       } else {
-        deg = 1440 + 295; // Second spin lands on Rs.1000
-        wheel.style.transform = `rotate(${deg}deg)`;
-        setTimeout(() => {
-          alert("🎉 ඔබ Rs.1000ක් දිනාගෙන ඇත! 🎉");
-          window.location.href = "products.html";
-        }, 4500);
+        deg = 1440 + 288; // Rs.1000
       }
+
+      wheel.style.transform = `rotate(${deg}deg)`;
+
+      setTimeout(() => {
+        spinSound.pause(); // stop spin sound
+        spinSound.currentTime = 0;
+        winSound.play(); // play winning sound
+
+        if (spins === 1) {
+          alert('TRY AGAIN! 🎁');
+        } else {
+          alert('🎉 ඔබ Rs.1000ක් දිනාගෙන ඇත! 🎉');
+          window.location.href = 'products.html';
+        }
+      }, 4500);
     }
   </script>
 </body>
